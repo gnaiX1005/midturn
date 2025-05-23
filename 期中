@@ -1,0 +1,47 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar } from "@/components/ui/avatar";
+
+export default function SocialNetwork() {
+  const [posts, setPosts] = useState([
+    { id: 1, user: "Alice", avatar: "🧑‍🎨", content: "今天天氣真好！" },
+    { id: 2, user: "Bob", avatar: "🧑‍🚀", content: "我剛吃了好吃的拉麵 🍜" }
+  ]);
+  const [newPost, setNewPost] = useState("");
+
+  const handlePost = () => {
+    if (!newPost.trim()) return;
+    setPosts([{ id: Date.now(), user: "你", avatar: "😀", content: newPost }, ...posts]);
+    setNewPost("");
+  };
+
+  return (
+    <div className="max-w-xl mx-auto p-4 space-y-4">
+      <h1 className="text-2xl font-bold text-center">社交網路</h1>
+      <div className="flex gap-2">
+        <Input
+          placeholder="你在想什麼？"
+          value={newPost}
+          onChange={(e) => setNewPost(e.target.value)}
+        />
+        <Button onClick={handlePost}>發佈</Button>
+      </div>
+
+      <div className="space-y-2">
+        {posts.map((post) => (
+          <Card key={post.id}>
+            <CardContent className="flex items-start gap-4 p-4">
+              <Avatar className="text-2xl">{post.avatar}</Avatar>
+              <div>
+                <div className="font-semibold">{post.user}</div>
+                <div>{post.content}</div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
