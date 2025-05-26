@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>簡易社交網路</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    textarea { width: 100%; height: 80px; }
+    button { padding: 8px 16px; margin-top: 10px; }
+    li { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <h1>貼文牆</h1>
+  <textarea id="content" placeholder="輸入貼文..."></textarea><br>
+  <button onclick="submitPost()">發文</button>
+  <h2>所有貼文</h2>
+  <ul id="postList"></ul>
+
+  <script>
+    const API = 'https://你的後端網址.onrender.com/api/posts'; // ✅ 替換成你的 Render API 網址
+
+    async function fetchPosts() {
+      const res = await fetch(API);
+      const posts = await res.json();
+      const list = document.getElementById('postList');
+      list.innerHTML = posts.map(p => `<li><b>${p.author}</b>: ${p.content}</li>`).join('');
+    }
+
+    async function submitPost() {
+      const content = document.getElementById('content').value;
+      if (!content.trim()) return alert('請輸入內容');
+      await fetch(API, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ author: "匿名", content })
+      });
+      document.getElementById('content').value = '';
+      fetchPosts();
+    }
+
+    fetchPosts();
+  </script>
+</body>
+</html>
+
