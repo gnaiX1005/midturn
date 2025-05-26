@@ -18,8 +18,8 @@
   <ul id="postList"></ul>
 
   <script>
-    const API = 'https://gnaix1005.github.io/midturn/frontend/';
-
+    const API = 'https://midturn-backend-gnaiX1005.onrender.com/api/posts';
+    
     async function fetchPosts() {
       const res = await fetch(API);
       const posts = await res.json();
